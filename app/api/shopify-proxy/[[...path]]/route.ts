@@ -188,10 +188,10 @@ async function fetchAndRenderPost(slug: string): Promise<string> {
 </html>`;
 }
 
-type WysiwygBlock = { _type: 'wysiwygBlock'; title: string; content: unknown[] };
+type WysiwygBlock = { _type: 'wysiwygBlock'; title: string; content: Parameters<typeof toHTML>[0] };
 type FaqBlock = { _type: 'faqBlock'; title: string; items: { question: string; answer: string }[] };
 type CtaBlock = { _type: 'ctaBlock'; title: string; description: string; btnText: string };
-type QuickAnswerBlock = { _type: 'quickAnswerBlock'; title: string; content: unknown[] };
+type QuickAnswerBlock = { _type: 'quickAnswerBlock'; title: string; content: Parameters<typeof toHTML>[0] };
 type BodyBlock = WysiwygBlock | FaqBlock | CtaBlock | QuickAnswerBlock;
 
 function renderBody(body: BodyBlock[]): string {
