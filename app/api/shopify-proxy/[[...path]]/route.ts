@@ -28,7 +28,7 @@ function verifyShopifySignature(query: URLSearchParams): boolean {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
+  { params }: { params: Promise<{ path?: string[] }> }
 ) {
   const searchParams = request.nextUrl.searchParams;
 
@@ -37,10 +37,10 @@ export async function GET(
   }
 
   const { path } = await params;
-  const slug = path.join('/');
+  const slug = path?.join('/') || '';
 
   try {
-    const html = slug === 'liste'
+    const html = !slug || slug === 'liste'
       ? await fetchAndRenderAuthorList()
       : await fetchAndRenderPost(slug);
 
