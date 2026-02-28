@@ -26,15 +26,18 @@ function verifyShopifySignature(query: URLSearchParams): boolean {
   return hash === signature;
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ path: string[] }> }
+) {
   const searchParams = request.nextUrl.searchParams;
 
   if (!verifyShopifySignature(searchParams)) {
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
-  const pathPrefix = searchParams.get('path_prefix') || '';
-  const slug = pathPrefix.replace(/^\//, '');
+  const { path } = await params;
+  const slug = path.join('/');
 
   try {
     const html = await fetchAndRenderPost(slug);
